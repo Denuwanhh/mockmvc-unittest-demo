@@ -4,6 +4,30 @@ MockMvc approach is to not start the server at all, but test only the layer belo
 
 ## Build with Maven
 
+### Create the directory structure
+
+In order to avoid unnecessary while execute the unit tests, manage DB by using different profiles. 
+
+```
+└── src
+    └── main
+        └── java
+            └── com
+                └── service
+                    └── EmployeeServiceApplication.java
+                        └── controller
+                            └── EmployeeController.java
+                        └── entity
+                            └── Employee.java
+                            └── EmployeeRepository.java
+                        └── service
+                            └── EmployeeService.java
+            └── service
+                └── application.properties
+                └── application-dev.properties
+                └── application-prod.properties
+
+```
 Along with other Spring Web dependencies, need to use ```spring-boot-starter-test```
 
 ```xml
