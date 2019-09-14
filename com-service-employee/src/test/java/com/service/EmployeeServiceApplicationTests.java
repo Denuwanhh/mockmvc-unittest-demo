@@ -23,7 +23,7 @@ public class EmployeeServiceApplicationTests {
 	
 	@Test
 	public void Employee_WhenAccessRoot_GetAllEmployees() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/employee").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mockMvc.perform(MockMvcRequestBuilders.get("/employees").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 	
 

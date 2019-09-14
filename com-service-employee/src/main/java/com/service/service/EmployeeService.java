@@ -10,11 +10,21 @@ import com.service.entity.EmployeeRepository;
 
 @Component
 public class EmployeeService {
-	
+
 	@Autowired
 	private EmployeeRepository employeeRepository;
-	
-	public List<Employee> getAllEmployees(){
+
+	public List<Employee> getAllEmployees() {
 		return employeeRepository.findAll();
+	}
+
+	public Employee addNewEmployee(Employee employee) {
+
+		Employee createdEmployee = null;
+
+		if (employee.getEmployeeID() == null)
+			createdEmployee = employeeRepository.save(employee);
+
+		return createdEmployee;
 	}
 }

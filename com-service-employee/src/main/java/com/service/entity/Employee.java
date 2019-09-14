@@ -4,8 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Employee {
@@ -13,6 +14,8 @@ public class Employee {
 	@Id
 	@GeneratedValue
 	private Integer employeeID;
+	@NotNull
+	@NotEmpty
 	private String employeeName;
 	private String employeeAddress;
 	private Date dateOfBirth;
