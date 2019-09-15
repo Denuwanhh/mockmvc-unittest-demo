@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -14,8 +15,7 @@ public class Employee {
 	@Id
 	@GeneratedValue
 	private Integer employeeID;
-	@NotNull
-	@NotEmpty
+	@NotBlank(message = "Employee Name is mandatory")
 	private String employeeName;
 	private String employeeAddress;
 	private Date dateOfBirth;

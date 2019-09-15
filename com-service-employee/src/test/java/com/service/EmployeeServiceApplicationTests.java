@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,7 +72,9 @@ public class EmployeeServiceApplicationTests {
 		mockMvc.perform(MockMvcRequestBuilders.post("/employees")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(new ObjectMapper().writeValueAsString(employee)))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.employeeName").value("Employee Name is mandatory"))
+				.andDo(MockMvcResultHandlers.print());
 	}
 
 
