@@ -2,6 +2,8 @@ package com.service;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,37 @@ public class EmployeeServiceApplicationTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.employeeName").value("Employee Name is mandatory"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+	
+	@Test
+	public void Employee_WhenPutWithEmployeeID_ShouldRecordUpdate() throws Exception {
+		Employee employee = new Employee();
+		employee.setEmployeeAddress("New Address");
+		employee.setEmployeeName("New Names");
+		employee.setDateOfBirth(new Date());
+		
+		mockMvc.perform(MockMvcRequestBuilders.put("/employees/10")
+				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.content(new ObjectMapper().writeValueAsString(employee)))
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.employeeID").value("10"))
+				.andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void Employee_WhenPutWithEmployeeIDNotExisting_ShouldGetNotFoundStatus() throws Exception {
+		Employee employee = new Employee();
+		employee.setEmployeeAddress("New Address");
+		employee.setEmployeeName("New Names");
+		employee.setDateOfBirth(new Date());
+		
+		mockMvc.perform(MockMvcRequestBuilders.put("/employees/-10")
+				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.content(new ObjectMapper().writeValueAsString(employee)))
+				.andExpect(status().isNotFound())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.employeeID").isEmpty())
+				.andDo(MockMvcResultHandlers.print());
+	}
+
 
 
 }

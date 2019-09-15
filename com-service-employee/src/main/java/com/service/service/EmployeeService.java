@@ -19,12 +19,17 @@ public class EmployeeService {
 	}
 
 	public Employee addNewEmployee(Employee employee) {
+		return employee.getEmployeeID() == null ? employeeRepository.save(employee) : null;
+	}
 
-		Employee createdEmployee = null;
-
-		if (employee.getEmployeeID() == null)
-			createdEmployee = employeeRepository.save(employee);
-
-		return createdEmployee;
+	public Employee updateEmployee(Employee newEmployee, Integer employeeID) {
+		return employeeRepository.findById(employeeID).map(employee -> {
+			employee.setEmployeeName(newEmployee.getEmployeeName());
+			employee.setEmployeeAddress(newEmployee.getEmployeeAddress());
+			employee.setDateOfBirth(newEmployee.getDateOfBirth());
+			return employeeRepository.save(employee);
+		}).orElseGet(() -> {
+			return null;
+		});
 	}
 }

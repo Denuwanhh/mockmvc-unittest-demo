@@ -13,15 +13,19 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.service.entity.Employee;
 import com.service.service.EmployeeService;
 
-@RestController("/employees")
+@RestController()
+@RequestMapping("/employees")
 public class EmployeeController {
 
 	@Autowired
@@ -39,16 +43,24 @@ public class EmployeeController {
 				: new ResponseEntity<Employee>(employee, HttpStatus.CONFLICT);
 	}
 
+	@PutMapping(path = "/{employeeID}")
+	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee newEmployee, @PathVariable("employeeID") Integer employeeID) {
+
+		Employee employee = employeeService.updateEmployee(newEmployee, employeeID);
+
+		return employee != null ? new ResponseEntity<Employee>(employee, HttpStatus.OK)
+				: new ResponseEntity<Employee>(newEmployee, HttpStatus.NOT_FOUND);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors()
-		.forEach((error) -> {
-				String fieldName = ((FieldError) error).getField();
-				String errorMessage = error.getDefaultMessage();
-				errors.put(fieldName, errorMessage);
-			});
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
 		return errors;
 	}
 }
