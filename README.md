@@ -6,7 +6,7 @@ MockMvc approach is to not start the server at all, but test only the layer belo
 
 ### Create the directory structure
 
-In order to avoid unnecessary while execute the unit tests, manage DB by using different profiles. 
+In order to avoid unnecessary record creation in PROD DB while execute the unit tests, by using different profiles we can manage DB. 
 
 ```
 └── src
