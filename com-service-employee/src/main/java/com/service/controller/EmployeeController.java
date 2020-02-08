@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,12 +45,19 @@ public class EmployeeController {
 	}
 
 	@PutMapping(path = "/{employeeID}")
-	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee newEmployee, @PathVariable("employeeID") Integer employeeID) {
+	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee newEmployee,
+			@PathVariable("employeeID") Integer employeeID) {
 
 		Employee employee = employeeService.updateEmployee(newEmployee, employeeID);
 
 		return employee != null ? new ResponseEntity<Employee>(employee, HttpStatus.OK)
 				: new ResponseEntity<Employee>(newEmployee, HttpStatus.NOT_FOUND);
+	}
+
+	@DeleteMapping(path = "/{employeeID}")
+	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeID") Integer employeeID) {
+		return employeeService.deleteEmployee(employeeID) ? new ResponseEntity<>(HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

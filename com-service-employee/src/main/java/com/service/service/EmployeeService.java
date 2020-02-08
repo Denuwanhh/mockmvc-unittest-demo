@@ -32,4 +32,16 @@ public class EmployeeService {
 			return null;
 		});
 	}
+
+	public boolean deleteEmployee(Integer employeeID) {
+
+		boolean status = false;
+
+		if (employeeRepository.findById(employeeID).isPresent()) {
+			employeeRepository.deleteById(employeeID);
+			status = true;
+		}
+
+		return status;
+	}
 }
